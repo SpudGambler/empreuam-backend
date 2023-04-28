@@ -1,27 +1,17 @@
 const express = require("express");
 const routerUser = express.Router();
+const controller = require("../controllers/index");
 
-routerUser.post("/user", (req, res) => {
-  res.status(200).send("Post Working");
-});
+routerUser.post("/user", controller.user.createNew);
 
-routerUser.get("/", (req, res) => {
-  res.status(200).send("Get Working");
-});
+routerUser.get("/", controller.user.getAll);
 
-routerUser.get("/:userId", (req, res) => {
-  const { userId } = req.params;
-  res.status(200).send("Get By Id Working: " + userId);
-});
+routerUser.get("/:id", controller.user.getById);
 
-routerUser.put("/:userId", (req, res) => {
-  const { userId } = req.params;
-  res.status(200).send("Put Working: " + userId);
-});
+routerUser.put("/:id", controller.user.editAt);
 
-routerUser.delete("/:userId", (req, res) => {
-  const { userId } = req.params;
-  res.status(200).send("Delete Working: " + userId);
-});
+routerUser.delete("/:id", controller.user.deleteUser);
+
+routerUser.post("/user/register", controller.user.createNewEntreprenaurUser);
 
 module.exports = routerUser;
