@@ -212,7 +212,7 @@ controller.createNewAdviserUser = async function (req, res) {
           documento: req.body.documento,
           password: password,
           email: req.body.email,
-          rol: "e",
+          rol: "ad",
         })
         .then((result) => {
           models.adviser
@@ -236,6 +236,56 @@ controller.createNewAdviserUser = async function (req, res) {
                   celular: req.body.celular,
                   sector: req.body.sector,
                   titulo: req.body.titulo,
+                },
+              });
+            });
+        });
+    }
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
+controller.createNewAdmin = async function (req, res) {
+  try {
+    const checkUserData = await models.user.findAll({
+      where: {
+        [Op.or]: {
+          email: req.body.email,
+          documento: req.body.documento,
+        },
+      },
+    });
+    if (checkUserData.length > 0) {
+      res
+        .status(500)
+        .json({ message: "Username or document has already in use" });
+    } else {
+      const password = (await bcrypt.hash(req.body.password, 10)).toString();
+      await models.user
+        .create({
+          nombre: req.body.nombre,
+          apellido: req.body.apellido,
+          documento: req.body.documento,
+          password: password,
+          email: req.body.email,
+          rol: "ad",
+        })
+        .then((result) => {
+          models.admin
+            .create({
+              usuario_id: result.id,
+            })
+            .then((result) => {
+              res.status(201).json({
+                message: "User successful created",
+                data: {
+                  nombre: req.body.nombre,
+                  apellido: req.body.apellido,
+                  documento: req.body.documento,
+                  email: req.body.email,
+                  password: req.body.password,
+                  rol: req.body.rol,
                 },
               });
             });

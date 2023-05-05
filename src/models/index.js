@@ -5,12 +5,14 @@ const commentModel = require("./commentModel");
 const followUpModel = require("./followUpModel");
 const sesionModel = require("./sesionModel");
 const taskModel = require("./taskModel");
-const adviserModel = require("./adviserModel")
+const adviserModel = require("./adviserModel");
+const adminModel = require("./adminMode");
 
 const models = {};
 models.user = userModel;
 models.entreprenaur = entreprenaurModel;
 models.adviser = adviserModel;
+models.admin = adminModel;
 models.business = businessModel;
 models.comment = commentModel;
 models.followUp = followUpModel;
