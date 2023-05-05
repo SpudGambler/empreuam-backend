@@ -17,7 +17,8 @@ routerUser.post(
   controller.user.createNewEntreprenaurUser
 );
 
-routerUser.post("/user/adviser", controller.user.createNewAdviserUser);
-routerUser.post("/user/adviser", controller.user.createNewAdviserUser);
+routerUser.post("/user/register/adviser", controller.user.createNewAdviserUser);
+
+routerUser.post("/user/register/admin", controller.user.createNewAdmin);
 
 module.exports = routerUser;
