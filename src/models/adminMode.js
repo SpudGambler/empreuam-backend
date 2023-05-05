@@ -1,8 +1,8 @@
 const sequelize = require("sequelize");
 const db = require("../config/database");
 const models = require("./index");
-var entreprenaur = db.define(
-  "emprendedores",
+var admin = db.define(
+  "administradores",
   {
     usuario_id: {
       type: sequelize.INTEGER,
@@ -12,10 +12,6 @@ var entreprenaur = db.define(
         model: "usuarios",
         key: "id",
       },
-    },
-    celular: {
-      type: sequelize.STRING(10),
-      allowNull: false,
     },
     created_at: {
       type: sequelize.DATE,
@@ -30,4 +26,4 @@ var entreprenaur = db.define(
   }
 );
 
-module.exports = entreprenaur;
+module.exports = admin;

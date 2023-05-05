@@ -12,6 +12,11 @@ routerUser.put("/:id", controller.user.editAt);
 
 routerUser.delete("/:id", controller.user.deleteUser);
 
-routerUser.post("/user/register", controller.user.createNewEntreprenaurUser);
+routerUser.post(
+  "/user/entreprenaur",
+  controller.user.createNewEntreprenaurUser
+);
+
+routerUser.post("/user/adviser", controller.user.createNewAdviserUser);
 
 module.exports = routerUser;

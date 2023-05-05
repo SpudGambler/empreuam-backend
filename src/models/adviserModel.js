@@ -1,37 +1,24 @@
 const sequelize = require("sequelize");
 const db = require("../config/database");
 const models = require("./index");
-var task = db.define(
-  "tareas",
+var adviser = db.define(
+  "asesores",
   {
-    id: {
+    usuario_id: {
       type: sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    sesion_id: {
-      type: sequelize.INTEGER,
       allowNull: false,
       references: {
-        model: "sesiones",
+        model: "usuarios",
         key: "id",
       },
     },
-    estado: {
-      type: sequelize.ENUM("pendiente", "entregado", "retrasado"),
+    sector: {
+      type: sequelize.STRING(50),
       allowNull: false,
     },
-    descripcion: {
-      type: sequelize.TEXT,
-      allowNull: false,
-    },
-    data: {
-      type: sequelize.BLOB,
-      allowNull: false,
-    },
-    fecha_entrega: {
-      type: sequelize.DATE,
+    titulo: {
+      type: sequelize.STRING(50),
       allowNull: false,
     },
     created_at: {
@@ -47,4 +34,4 @@ var task = db.define(
   }
 );
 
-module.exports = task;
+module.exports = adviser;
