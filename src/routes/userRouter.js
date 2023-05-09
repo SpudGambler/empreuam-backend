@@ -13,8 +13,8 @@ routerUser.put("/:id", controller.user.editAt);
 routerUser.delete("/:id", controller.user.deleteUser);
 
 routerUser.post(
-  "/user/register/entreprenaur",
-  controller.user.createNewEntreprenaurUser
+  "/user/register/entrepreneur",
+  controller.user.createNewEntrepreneurUser
 );
 
 routerUser.post("/user/register/adviser", controller.user.createNewAdviserUser);

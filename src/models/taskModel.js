@@ -1,6 +1,5 @@
 const sequelize = require("sequelize");
 const db = require("../config/database");
-const models = require("./index");
 var task = db.define(
   "tareas",
   {

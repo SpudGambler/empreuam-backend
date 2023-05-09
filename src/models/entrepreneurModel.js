@@ -1,7 +1,6 @@
 const sequelize = require("sequelize");
 const db = require("../config/database");
-const models = require("./index");
-var entreprenaur = db.define(
+var entrepreneur = db.define(
   "emprendedores",
   {
     usuario_id: {
@@ -30,4 +29,4 @@ var entreprenaur = db.define(
   }
 );
 
-module.exports = entreprenaur;
+module.exports = entrepreneur;

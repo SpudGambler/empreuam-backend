@@ -1,5 +1,5 @@
 const userModel = require("./userModel");
-const entreprenaurModel = require("./entreprenaurModel");
+const entrepreneurModel = require("./entrepreneurModel");
 const businessModel = require("./businessModel");
 const commentModel = require("./commentModel");
 const followUpModel = require("./followUpModel");
@@ -10,7 +10,7 @@ const adminModel = require("./adminMode");
 
 const models = {};
 models.user = userModel;
-models.entreprenaur = entreprenaurModel;
+models.entrepreneur = entrepreneurModel;
 models.adviser = adviserModel;
 models.admin = adminModel;
 models.business = businessModel;

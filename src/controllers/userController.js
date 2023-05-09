@@ -11,7 +11,7 @@ controller.getAll = async function (req, res) {
         .status(200)
         .json({ message: "Connection successful", data: userData });
     } else {
-      res.status(200).json({ message: "Connection failed", data: [] });
+      res.status(200).json({ message: "No Users Detected", data: [] });
     }
   } catch (error) {
     res.status(404).json({ message: error });
@@ -29,7 +29,7 @@ controller.getById = async function (req, res) {
         .status(200)
         .json({ message: "Connection successful", data: userData });
     } else {
-      res.status(200).json({ message: "Connection failed", data: [] });
+      res.status(200).json({ message: "No Users Detected", data: [] });
     }
   } catch (error) {
     res.status(404).json({ message: error });
@@ -38,6 +38,7 @@ controller.getById = async function (req, res) {
 
 controller.createNew = async function (req, res) {
   try {
+    console.log("Stamp 1");
     const checkData = await models.user.findAll({
       where: {
         [Op.or]: {
@@ -137,7 +138,7 @@ controller.deleteUser = async function (req, res) {
   }
 };
 
-controller.createNewEntreprenaurUser = async function (req, res) {
+controller.createNewEntrepreneurUser = async function (req, res) {
   try {
     const checkUserData = await models.user.findAll({
       where: {
@@ -163,7 +164,7 @@ controller.createNewEntreprenaurUser = async function (req, res) {
           rol: "e",
         })
         .then((result) => {
-          models.entreprenaur
+          models.entrepreneur
             .create({
               usuario_id: result.id,
               celular: req.body.celular,
