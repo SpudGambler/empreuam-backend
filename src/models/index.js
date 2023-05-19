@@ -6,7 +6,7 @@ const followUpModel = require("./followUpModel");
 const sesionModel = require("./sesionModel");
 const taskModel = require("./taskModel");
 const adviserModel = require("./adviserModel");
-const adminModel = require("./adminMode");
+const adminModel = require("./adminModel");
 
 const models = {};
 models.user = userModel;

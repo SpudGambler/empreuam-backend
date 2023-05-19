@@ -12,6 +12,14 @@ var business = db.define(
       type: sequelize.STRING(50),
       allowNull: false,
     },
+    usuario_id: {
+      type: sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: "usuarios",
+        key: "id",
+      },
+    },
     sector: {
       type: sequelize.STRING(50),
       allowNull: false,

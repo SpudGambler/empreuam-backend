@@ -9,4 +9,5 @@ var db = new sequelize(
     host: process.env.DB_HOST,
   }
 );
+
 module.exports = db;
