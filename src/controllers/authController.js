@@ -18,9 +18,13 @@ controller.userSingIn = async function (req, res) {
       if (!isCorrectPassword) {
         res.status(404).json({ message: "Username or password are incorrect" });
       } else {
-        const token = jwt.sign({ id: userData.id }, process.env.SECRETKEY, {
-          expiresIn: 86400,
-        });
+        const token = jwt.sign(
+          { token_type: "access", id: userData.id, iat: Date.now() },
+          process.env.SECRETKEY,
+          {
+            expiresIn: 10800000,
+          }
+        );
         res.status(200).json({ message: "Login successfully", token: token });
       }
     }
@@ -52,6 +56,25 @@ controller.entrepreneurRegister = async function (req, res) {
         data: resultData,
       });
     }
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
+controller.getLoggedUser = async function (req, res) {
+  const { authorization } = req.headers;
+  if (!authorization || !authorization.startsWith("Bearer ")) {
+    res.status(403).send({ message: "No token provided" });
+  }
+  const token = authorization.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, process.env.SECRETKEY);
+    if (Date.now() > decoded.exp) {
+      res.status(401).json({ message: "Token has expired!" });
+    }
+    const user = await services.user.getById(decoded.id);
+    if (!user) res.status(404).json({ message: "No user found" });
+    res.status(200).json(user);
   } catch (error) {
     res.status(404).json({ message: error });
   }

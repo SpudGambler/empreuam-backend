@@ -1,6 +1,8 @@
 const express = require("express");
 const authRouter = express.Router();
+const middlewares = require("../middleware/index");
 const controllers = require("../controllers/index");
+const validators = require("../validators/index");
 
 authRouter.use((req, res, next) => {
   res.header(
@@ -12,9 +14,20 @@ authRouter.use((req, res, next) => {
 
 authRouter.post(
   "/register/entrepreneur",
+  validators.auth.validateCreateEntrepreneur,
   controllers.auth.entrepreneurRegister
 );
 
-authRouter.post("/login", controllers.auth.userSingIn);
+authRouter.post(
+  "/login",
+  validators.auth.validateLogin,
+  controllers.auth.userSingIn
+);
+
+authRouter.get(
+  "/",
+  [middlewares.authJwt.verifyToken],
+  controllers.auth.getLoggedUser
+);
 
 module.exports = authRouter;

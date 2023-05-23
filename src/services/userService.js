@@ -43,11 +43,10 @@ service.createOne = async function (
         },
       },
     });
-    console.log(checkUserData.length);
     if (checkUserData.length > 0) {
       return null;
     } else {
-      let resultData = {};
+      const resultData = {};
       await models.user
         .create({
           nombre: nombre,
@@ -83,40 +82,49 @@ service.updateOne = async function (
   rol
 ) {
   try {
+    let updateValue = false;
     await models.user
       .findAll({
         where: { id: id },
       })
       .then(async (result) => {
         if (result.length > 0) {
-          await models.user.update(
-            {
-              nombre: nombre,
-              apellido: apellido,
-              documento: documento,
-              email: email,
-              password: password,
-              rol: rol,
-            },
-            { where: { id: id } }
-          );
-          return true;
-        } else {
-          return false;
+          await models.user
+            .update(
+              {
+                nombre: nombre,
+                apellido: apellido,
+                documento: documento,
+                email: email,
+                password: password,
+                rol: rol,
+              },
+              { where: { id: id } }
+            )
+            .then(() => {
+              updateValue = true;
+            });
         }
       });
+    return updateValue;
   } catch (error) {
     throw new Error("An error has ocurred: ", error);
   }
 };
 
-/* service.deleteOne = async function (id) {
+service.deleteOne = async function (id) {
   try {
-    const userData = await models.user.findAll();
-    return userData;
+    let deleteValue = false;
+    await models.user.findAll({ where: { id: id } }).then(async (result) => {
+      if (result.length > 0) {
+        await models.user.destroy({ where: { id: id } });
+        deleteValue = true;
+      }
+    });
+    return deleteValue;
   } catch (error) {
     throw new Error("An error has ocurred: ", error);
   }
-}; */
+};
 
 module.exports = service;

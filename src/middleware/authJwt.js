@@ -5,12 +5,15 @@ const middleware = {};
 
 middleware.verifyToken = async function (req, res, next) {
   const { authorization } = req.headers;
-  if (authorization === null || authorization.startsWith("Bearer ") === false) {
+  if (!authorization || !authorization.startsWith("Bearer ")) {
     return res.status(403).send({ message: "No token provided" });
   }
   const token = authorization.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.SECRETKEY);
+    if (Date.now() > decoded.exp) {
+      return res.status(401).json({ message: "Token has expired!" });
+    }
     req.userId = decoded.id;
     const user = await services.user.getById(req.userId);
     if (!user) return res.status(404).json({ message: "No user found" });

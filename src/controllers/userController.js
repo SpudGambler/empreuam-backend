@@ -1,4 +1,3 @@
-const models = require("../models/index");
 const services = require("../services/index");
 const bcryptjs = require("bcryptjs");
 const { Op } = require("sequelize");
@@ -65,40 +64,27 @@ controller.createNew = async function (req, res) {
 
 controller.editAt = async function (req, res) {
   const { id } = req.params;
+  const { nombre, apellido, documento, email, password, rol } = req.body;
   try {
-    await models.user
-      .findAll({
-        where: { id: id },
-      })
-      .then(async (result) => {
-        if (result.length > 0) {
-          await models.user.update(
-            {
-              nombre: req.body.nombre,
-              apellido: req.body.apellido,
-              documento: req.body.documento,
-              email: req.body.email,
-              password: req.body.password,
-              rol: req.body.rol,
-            },
-            { where: { id: id } }
-          );
-          res.status(200).json({
-            message: "update successful",
-            data: {
-              id: req.body.id,
-              nombre: req.body.nombre,
-              apellido: req.body.apellido,
-              documento: req.body.documento,
-              email: req.body.email,
-              password: req.body.password,
-              rol: req.body.rol,
-            },
-          });
-        } else {
-          res.status(500).json({ message: "Update failed" });
-        }
-      });
+    let newPassword = password;
+    if (password) {
+      const numSaltRounds = 10;
+      const hashPassword = await bcryptjs.hash(password, numSaltRounds);
+      newPassword = hashPassword;
+    }
+    const userUpdated = await services.user.updateOne(
+      id,
+      nombre,
+      apellido,
+      documento,
+      email,
+      newPassword,
+      rol
+    );
+    if (!userUpdated) return res.status(500).json({ message: "Update failed" });
+    res.status(200).json({
+      message: "Update successful",
+    });
   } catch (error) {
     res.status(404).json({ message: error });
   }
@@ -107,13 +93,10 @@ controller.editAt = async function (req, res) {
 controller.delete = async function (req, res) {
   const { id } = req.params;
   try {
-    await models.user.findAll({ where: { id: id } }).then(async (result) => {
-      if (result.length > 0) {
-        await models.user.destroy({ where: { id: id } });
-        res.status(200).json({ message: "Delete user successfully" });
-      } else {
-        res.status(404).json({ message: "Id user not found" });
-      }
+    const userDeleted = await services.user.deleteOne(id);
+    if (!userDeleted) return res.status(500).json({ message: "Update failed" });
+    res.status(200).json({
+      message: "Delete successful",
     });
   } catch (error) {
     res.status(404).json({ message: error });
