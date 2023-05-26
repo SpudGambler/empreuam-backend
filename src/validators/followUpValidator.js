@@ -3,12 +3,12 @@ const helpers = require("../helpers/index");
 const validator = {};
 
 validator.validateCreate = [
-  check("asesor_id").exists().notEmpty(),
+  check("asesor_id").exists(),
   check("negocio_id").exists().notEmpty(),
   check("categoria_proyecto").exists().notEmpty(),
   check("descripcion").exists().notEmpty(),
   check("status").exists().notEmpty(),
-  check("fecha_inicio").exists().isDate().notEmpty(),
+  check("fecha_inicio").exists() /* .isDate() */,
   (res, req, next) => {
     helpers.validate.validateResult(res, req, next);
   },

@@ -19,7 +19,7 @@ var followUp = db.define(
     },
     asesor_id: {
       type: sequelize.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "usuarios",
         key: "id",
@@ -47,7 +47,7 @@ var followUp = db.define(
     },
     fecha_inicio: {
       type: sequelize.DATEONLY,
-      allowNull: false,
+      allowNull: true,
     },
     created_at: {
       type: sequelize.DATE,

@@ -18,7 +18,7 @@ routerFollowUp.get(
 
 routerFollowUp.post(
   "/followUp",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  [middlewares.authJwt.verifyToken],
   validators.followUp.validateCreate,
   controllers.followUp.createNew
 );

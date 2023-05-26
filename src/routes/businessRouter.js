@@ -5,8 +5,14 @@ const middlewares = require("../middleware/index");
 const validators = require("../validators/index");
 
 routerBusiness.get(
+  "/me",
+  [middlewares.authJwt.verifyToken],
+  controllers.business.getMine
+);
+
+routerBusiness.get(
   "/",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  [middlewares.authJwt.verifyToken /* , middlewares.authJwt.isAdmin */],
   controllers.business.getAll
 );
 

@@ -2,6 +2,17 @@ const models = require("../models/index");
 const { Op } = require("sequelize");
 const service = {};
 
+service.getMine = async function (usuario_id) {
+  try {
+    const businessData = await models.business.findAll({
+      where: { usuario_id: usuario_id },
+    });
+    return businessData;
+  } catch (error) {
+    throw new Error("An error has ocurred: ", error);
+  }
+};
+
 service.getAll = async function () {
   try {
     const businessData = await models.business.findAll();
