@@ -61,9 +61,9 @@ service.createAdvisorUser = async function (
   apellido,
   documento,
   email,
+  password,
   sector,
-  titulo,
-  password
+  titulo
 ) {
   try {
     const checkUserData = await models.user.findAll({
