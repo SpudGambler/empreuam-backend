@@ -1,6 +1,22 @@
 const services = require("../services/index");
 const controller = {};
 
+controller.getMine = async function (req, res) {
+  try {
+    const usuario_id = req.userId;
+    const followUpData = await services.followUp.getMine(usuario_id);
+    if (followUpData.length > 0) {
+      res
+        .status(200)
+        .json({ message: "Connection successful", data: followUpData });
+    } else {
+      res.status(200).json({ message: "No Businesses Detected", data: [] });
+    }
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
 controller.getAll = async function (req, res) {
   try {
     const followUpData = await services.followUp.getAll();

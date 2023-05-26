@@ -5,14 +5,20 @@ const middlewares = require("../middleware/index");
 const validators = require("../validators/index");
 
 routerFollowUp.get(
+  "/me",
+  [middlewares.authJwt.verifyToken],
+  controllers.followUp.getMine
+);
+
+routerFollowUp.get(
   "/",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  [middlewares.authJwt.verifyToken /* middlewares.authJwt.isAdmin */],
   controllers.followUp.getAll
 );
 
 routerFollowUp.get(
   "/:id",
-  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  [middlewares.authJwt.verifyToken /* middlewares.authJwt.isAdmin */],
   controllers.followUp.getById
 );
 

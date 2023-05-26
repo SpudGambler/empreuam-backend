@@ -1,6 +1,17 @@
 const models = require("../models/index");
 const service = {};
 
+service.getMine = async function (usuario_id) {
+  try {
+    const followUpData = await models.followUp.findAll({
+      where: { emprendedor_id: usuario_id },
+    });
+    return followUpData;
+  } catch (error) {
+    throw new Error("An error has ocurred: ", error);
+  }
+};
+
 service.getAll = async function () {
   try {
     const followUpData = await models.followUp.findAll();
