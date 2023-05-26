@@ -56,6 +56,63 @@ service.createEntrepreneurUser = async function (
   }
 };
 
+service.createAdvisorUser = async function (
+  nombre,
+  apellido,
+  documento,
+  email,
+  sector,
+  titulo,
+  password
+) {
+  try {
+    const checkUserData = await models.user.findAll({
+      where: {
+        [Op.or]: {
+          email: email,
+          documento: documento,
+        },
+      },
+    });
+    if (checkUserData.length > 0) {
+      return null;
+    } else {
+      let resultData = {};
+      await models.user
+        .create({
+          nombre: nombre,
+          apellido: apellido,
+          documento: documento,
+          password: password,
+          email: email,
+          rol: "as",
+        })
+        .then((userResult) => {
+          resultData.id = userResult.dataValues.id;
+          resultData.nombre = userResult.dataValues.nombre;
+          resultData.apellido = userResult.dataValues.apellido;
+          resultData.documento = userResult.dataValues.documento;
+          resultData.password = userResult.dataValues.password;
+          resultData.email = userResult.dataValues.email;
+          resultData.rol = userResult.dataValues.rol;
+        });
+      await models.adviser
+        .create({
+          usuario_id: resultData.id,
+          sector: sector,
+          titulo: titulo,
+        })
+        .then((adviserResult) => {
+          resultData.sector = adviserResult.dataValues.sector;
+          resultData.titulo = adviserResult.dataValues.titulo;
+        });
+      return resultData;
+    }
+  } catch (error) {
+    throw new Error("An error has ocurred: ", error);
+  }
+};
+
 service.singInUser = async function (email) {
   try {
     const userData = await models.user.findAll({

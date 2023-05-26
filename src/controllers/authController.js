@@ -61,6 +61,36 @@ controller.entrepreneurRegister = async function (req, res) {
   }
 };
 
+controller.adviserRegister = async function (req, res) {
+  const { nombre, apellido, documento, email, password, sector, titulo } =
+    req.body;
+  const numSaltRounds = 10;
+  const hashPassword = await bcryptjs.hash(password, numSaltRounds);
+  try {
+    const resultData = await services.auth.createAdvisorUser(
+      nombre,
+      apellido,
+      documento,
+      email,
+      hashPassword,
+      sector,
+      titulo
+    );
+    if (resultData === null) {
+      res
+        .status(500)
+        .json({ message: "Username or document has already in use" });
+    } else {
+      res.status(201).json({
+        message: "User successful created",
+        data: resultData,
+      });
+    }
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
 controller.getLoggedUser = async function (req, res) {
   const usuario_id = req.userId;
   try {

@@ -19,6 +19,13 @@ authRouter.post(
 );
 
 authRouter.post(
+  "/register/adviser",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  validators.auth.validateCreateAdviser,
+  controllers.auth.adviserRegister
+);
+
+authRouter.post(
   "/login",
   validators.auth.validateLogin,
   controllers.auth.userSingIn
