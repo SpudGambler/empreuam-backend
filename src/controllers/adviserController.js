@@ -3,13 +3,13 @@ const controller = {};
 
 controller.getAll = async function (req, res) {
   try {
-    const entrepreneurData = await services.entrepreneur.getAll();
-    if (entrepreneurData.length > 0) {
+    const adviserData = await services.adviser.getAll();
+    if (adviserData.length > 0) {
       res
         .status(200)
-        .json({ message: "Connection successful", data: entrepreneurData });
+        .json({ message: "Connection successful", data: adviserData });
     } else {
-      res.status(200).json({ message: "No Entrepreneurs Detected", data: [] });
+      res.status(200).json({ message: "No Advisers Detected", data: [] });
     }
   } catch (error) {
     res.status(404).json({ message: error });
@@ -19,13 +19,13 @@ controller.getAll = async function (req, res) {
 controller.getById = async function (req, res) {
   const { user_id } = req.params;
   try {
-    const entrepreneurData = await services.entrepreneur.getById(user_id);
-    if (entrepreneurData === null) {
-      res.status(200).json({ message: "No Entrepreneur Detected", data: [] });
+    const adviserData = await services.adviser.getById(user_id);
+    if (adviserData === null) {
+      res.status(200).json({ message: "No Adviser Detected", data: [] });
     } else {
       res
         .status(200)
-        .json({ message: "Connection successful", data: entrepreneurData });
+        .json({ message: "Connection successful", data: adviserData });
     }
   } catch (error) {
     res.status(404).json({ message: error });
@@ -33,17 +33,18 @@ controller.getById = async function (req, res) {
 };
 
 controller.createNew = async function (req, res) {
-  const { usuario_id, celular } = req.body;
+  const { usuario_id, sector, titulo } = req.body;
   try {
-    const resultData = await services.entrepreneur.createOne(
+    const resultData = await services.adviser.createOne(
       usuario_id,
-      celular
+      sector,
+      titulo
     );
     if (resultData === null) {
-      res.status(500).json({ message: "Entrepreneur could not be created" });
+      res.status(500).json({ message: "Adviser could not be created" });
     } else {
       res.status(201).json({
-        message: "Entrepreneur successful created",
+        message: "Adviser successful created",
         data: resultData,
       });
     }
@@ -54,13 +55,14 @@ controller.createNew = async function (req, res) {
 
 controller.editAt = async function (req, res) {
   const { user_id } = req.params;
-  const { celular } = req.body;
+  const { sector, titulo } = req.body;
   try {
-    const entrepreneurUpdated = await services.entrepreneur.updateOne(
+    const adviserUpdated = await services.adviser.updateOne(
       user_id,
-      celular
+      sector,
+      titulo
     );
-    if (!entrepreneurUpdated)
+    if (!adviserUpdated)
       return res.status(500).json({ message: "Update failed" });
     res.status(200).json({
       message: "Update successful",
@@ -73,8 +75,8 @@ controller.editAt = async function (req, res) {
 controller.delete = async function (req, res) {
   const { user_id } = req.params;
   try {
-    const entrepreneurDeleted = await services.entrepreneur.deleteOne(user_id);
-    if (!entrepreneurDeleted)
+    const adviserDeleted = await services.adviser.deleteOne(user_id);
+    if (!adviserDeleted)
       return res.status(500).json({ message: "Delete failed" });
     res.status(200).json({
       message: "Delete successful",

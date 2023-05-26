@@ -3,13 +3,13 @@ const controller = {};
 
 controller.getAll = async function (req, res) {
   try {
-    const entrepreneurData = await services.entrepreneur.getAll();
-    if (entrepreneurData.length > 0) {
+    const sesionData = await services.sesion.getAll();
+    if (sesionData.length > 0) {
       res
         .status(200)
-        .json({ message: "Connection successful", data: entrepreneurData });
+        .json({ message: "Connection successful", data: sesionData });
     } else {
-      res.status(200).json({ message: "No Entrepreneurs Detected", data: [] });
+      res.status(200).json({ message: "No Sesions Detected", data: [] });
     }
   } catch (error) {
     res.status(404).json({ message: error });
@@ -17,15 +17,15 @@ controller.getAll = async function (req, res) {
 };
 
 controller.getById = async function (req, res) {
-  const { user_id } = req.params;
+  const { id } = req.params;
   try {
-    const entrepreneurData = await services.entrepreneur.getById(user_id);
-    if (entrepreneurData === null) {
-      res.status(200).json({ message: "No Entrepreneur Detected", data: [] });
+    const sesionData = await services.sesion.getById(id);
+    if (sesionData === null) {
+      res.status(200).json({ message: "No Sesion Detected", data: [] });
     } else {
       res
         .status(200)
-        .json({ message: "Connection successful", data: entrepreneurData });
+        .json({ message: "Connection successful", data: sesionData });
     }
   } catch (error) {
     res.status(404).json({ message: error });
@@ -33,17 +33,19 @@ controller.getById = async function (req, res) {
 };
 
 controller.createNew = async function (req, res) {
-  const { usuario_id, celular } = req.body;
+  const { seguimiento_id, fecha_inicio, fecha_fin, descripcion } = req.body;
   try {
-    const resultData = await services.entrepreneur.createOne(
-      usuario_id,
-      celular
+    const resultData = await services.sesion.createOne(
+      seguimiento_id,
+      fecha_inicio,
+      fecha_fin,
+      descripcion
     );
     if (resultData === null) {
-      res.status(500).json({ message: "Entrepreneur could not be created" });
+      res.status(500).json({ message: "Server Error" });
     } else {
       res.status(201).json({
-        message: "Entrepreneur successful created",
+        message: "Sesion successful created",
         data: resultData,
       });
     }
@@ -53,14 +55,17 @@ controller.createNew = async function (req, res) {
 };
 
 controller.editAt = async function (req, res) {
-  const { user_id } = req.params;
-  const { celular } = req.body;
+  const { id } = req.params;
+  const { seguimiento_id, fecha_inicio, fecha_fin, descripcion } = req.body;
   try {
-    const entrepreneurUpdated = await services.entrepreneur.updateOne(
-      user_id,
-      celular
+    const sesionUpdated = await services.sesion.updateOne(
+      id,
+      seguimiento_id,
+      fecha_inicio,
+      fecha_fin,
+      descripcion
     );
-    if (!entrepreneurUpdated)
+    if (!sesionUpdated)
       return res.status(500).json({ message: "Update failed" });
     res.status(200).json({
       message: "Update successful",
@@ -71,10 +76,10 @@ controller.editAt = async function (req, res) {
 };
 
 controller.delete = async function (req, res) {
-  const { user_id } = req.params;
+  const { id } = req.params;
   try {
-    const entrepreneurDeleted = await services.entrepreneur.deleteOne(user_id);
-    if (!entrepreneurDeleted)
+    const sesionDeleted = await services.sesion.deleteOne(id);
+    if (!sesionDeleted)
       return res.status(500).json({ message: "Delete failed" });
     res.status(200).json({
       message: "Delete successful",

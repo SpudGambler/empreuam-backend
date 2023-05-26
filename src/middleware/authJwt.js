@@ -49,4 +49,30 @@ middleware.isAdmin = async (req, res, next) => {
   }
 };
 
+middleware.isEntrepreneur = async (req, res, next) => {
+  const { authorization } = req.headers;
+  if (authorization === null || authorization.startsWith("Bearer ") === false) {
+    return res.status(403).send({ message: "No token provided" });
+  }
+  const token = authorization.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, process.env.SECRETKEY);
+    req.userId = decoded.id;
+    const userData = await services.user.getById(decoded.id);
+    if (userData === null) {
+      return res.status(403).json({ message: "Not user found" });
+    } else {
+      if (userData.rol == "e") {
+        next();
+        return;
+      } else {
+        return res.status(403).json({ message: "Require Entrepreneur Role!" });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
+  }
+};
+
 module.exports = middleware;

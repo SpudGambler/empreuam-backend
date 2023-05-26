@@ -1,39 +1,39 @@
 const express = require("express");
-const routerBusiness = express.Router();
+const routerFollowUp = express.Router();
 const controllers = require("../controllers/index");
 const middlewares = require("../middleware/index");
 const validators = require("../validators/index");
 
-routerBusiness.get(
+routerFollowUp.get(
   "/",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.business.getAll
+  controllers.followUp.getAll
 );
 
-routerBusiness.get(
+routerFollowUp.get(
   "/:id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.business.getById
+  controllers.followUp.getById
 );
 
-routerBusiness.post(
-  "/business",
-  [middlewares.authJwt.verifyToken],
-  validators.business.validateCreate,
-  controllers.business.createNew
+routerFollowUp.post(
+  "/followUp",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  validators.followUp.validateCreate,
+  controllers.followUp.createNew
 );
 
-routerBusiness.put(
+routerFollowUp.put(
   "/:id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  validators.business.validateUpdate,
-  controllers.business.editAt
+  validators.followUp.validateUpdate,
+  controllers.followUp.editAt
 );
 
-routerBusiness.delete(
+routerFollowUp.delete(
   "/:id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.business.delete
+  controllers.followUp.delete
 );
 
-module.exports = routerBusiness;
+module.exports = routerFollowUp;

@@ -62,17 +62,9 @@ controller.entrepreneurRegister = async function (req, res) {
 };
 
 controller.getLoggedUser = async function (req, res) {
-  const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith("Bearer ")) {
-    res.status(403).send({ message: "No token provided" });
-  }
-  const token = authorization.split(" ")[1];
+  const usuario_id = req.userId;
   try {
-    const decoded = jwt.verify(token, process.env.SECRETKEY);
-    if (Date.now() > decoded.exp) {
-      res.status(401).json({ message: "Token has expired!" });
-    }
-    const user = await services.user.getById(decoded.id);
+    const user = await services.user.getById(usuario_id);
     if (!user) res.status(404).json({ message: "No user found" });
     res.status(200).json(user);
   } catch (error) {

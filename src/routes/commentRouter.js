@@ -1,39 +1,39 @@
 const express = require("express");
-const routerBusiness = express.Router();
+const routerComment = express.Router();
 const controllers = require("../controllers/index");
 const middlewares = require("../middleware/index");
 const validators = require("../validators/index");
 
-routerBusiness.get(
+routerComment.get(
   "/",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.business.getAll
+  controllers.comment.getAll
 );
 
-routerBusiness.get(
+routerComment.get(
   "/:id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.business.getById
+  controllers.comment.getById
 );
 
-routerBusiness.post(
-  "/business",
-  [middlewares.authJwt.verifyToken],
-  validators.business.validateCreate,
-  controllers.business.createNew
+routerComment.post(
+  "/comment",
+  [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
+  validators.comment.validateCreate,
+  controllers.comment.createNew
 );
 
-routerBusiness.put(
+routerComment.put(
   "/:id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  validators.business.validateUpdate,
-  controllers.business.editAt
+  validators.comment.validateUpdate,
+  controllers.comment.editAt
 );
 
-routerBusiness.delete(
+routerComment.delete(
   "/:id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.business.delete
+  controllers.comment.delete
 );
 
-module.exports = routerBusiness;
+module.exports = routerComment;

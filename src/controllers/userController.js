@@ -1,6 +1,5 @@
 const services = require("../services/index");
 const bcryptjs = require("bcryptjs");
-const { Op } = require("sequelize");
 const controller = {};
 
 controller.getAll = async function (req, res) {
@@ -94,7 +93,7 @@ controller.delete = async function (req, res) {
   const { id } = req.params;
   try {
     const userDeleted = await services.user.deleteOne(id);
-    if (!userDeleted) return res.status(500).json({ message: "Update failed" });
+    if (!userDeleted) return res.status(500).json({ message: "Delete failed" });
     res.status(200).json({
       message: "Delete successful",
     });

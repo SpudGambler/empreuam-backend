@@ -1,39 +1,38 @@
 const express = require("express");
-const routerUser = express.Router();
+const routerAdmin = express.Router();
 const controllers = require("../controllers/index");
 const middlewares = require("../middleware/index");
 const validators = require("../validators/index");
 
-routerUser.get(
+routerAdmin.get(
   "/",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.user.getAll
+  controllers.admin.getAll
 );
 
-routerUser.get(
-  "/:id",
+routerAdmin.get(
+  "/:user_id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.user.getById
+  controllers.admin.getById
 );
 
-routerUser.post(
-  "/user",
+routerAdmin.post(
+  "/admin",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  validators.user.validateCreate,
-  controllers.user.createNew
+  validators.admin.validateCreate,
+  controllers.admin.createNew
 );
 
-routerUser.put(
-  "/:id",
+routerAdmin.put(
+  "/:user_id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  validators.user.validateUpdate,
-  controllers.user.editAt
+  controllers.admin.editAt
 );
 
-routerUser.delete(
-  "/:id",
+routerAdmin.delete(
+  "/:user_id",
   [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin],
-  controllers.user.delete
+  controllers.admin.delete
 );
 
-module.exports = routerUser;
+module.exports = routerAdmin;
